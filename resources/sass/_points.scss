@@ -1,0 +1,13 @@
+.v-stepper:not(.v-stepper--vertical) .v-stepper__label {
+  @include tablet {
+    display: block;
+  }
+}
+.layout-card{
+  height: 320px;
+}
+
+.student-name{
+  font-size: 18px;
+  vertical-align: bottom;
+}

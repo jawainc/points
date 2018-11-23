@@ -23,7 +23,8 @@
                     <p class="text-muted text-center">{{$student->email}}</p>
 
                     <a href="{{route('admin.students.edit', $student)}}" class="btn btn-primary btn-block"><b>Update</b></a>
-                    <a href="#" class="btn btn-success btn-block"><b>Update Courses</b></a>
+                    <a href="{{route('admin.students.show', $student)}}"
+                       class="btn btn-success btn-block"><b>Courses</b></a>
                 </div>
                 <!-- /.box-body -->
             </div>
@@ -124,11 +125,11 @@
                             @include('partials.error_messages')
                             <table class="table ">
                                 <tr>
-                                    <th >Section</th>
+                                    <th>Section</th>
                                     <th class="text-center">Hours</th>
                                     <th class="text-center">Minutes</th>
                                     <th class="text-center">Points</th>
-                                    <th ></th>
+                                    <th></th>
                                 </tr>
                                 @foreach($points as $point)
                                     <tr>
@@ -136,25 +137,34 @@
                                         <td class="text-center">
                                             <div class="section_value{{$point->id}}">{{$point->hours}}</div>
                                             <div class="section_edit{{$point->id}}" style="display: none;">
-                                                <input id="section_edit_hours_{{$point->id}}" type="text" value="{{$point->hours}}">
+                                                <input id="section_edit_hours_{{$point->id}}" type="text"
+                                                       value="{{$point->hours}}">
                                             </div>
                                         </td>
                                         <td class="text-center">
                                             <div class="section_value{{$point->id}}">{{$point->minutes}}</div>
                                             <div class="section_edit{{$point->id}}" style="display: none;">
-                                                <input id="section_edit_minutes_{{$point->id}}" type="text" value="{{$point->minutes}}">
+                                                <input id="section_edit_minutes_{{$point->id}}" type="text"
+                                                       value="{{$point->minutes}}">
                                             </div>
                                         </td>
                                         <td class="text-center">
                                             <div class="section_value{{$point->id}}">{{$point->points}}</div>
                                             <div class="section_edit{{$point->id}}" style="display: none;">
-                                                <input id="section_edit_points_{{$point->id}}" type="text" value="{{$point->points}}">
+                                                <input id="section_edit_points_{{$point->id}}" type="text"
+                                                       value="{{$point->points}}">
                                             </div>
                                         </td>
                                         <td class="text-right">
-                                            <button class="btn btn-primary btn-xs section_value{{$point->id}}" onclick="showEditForm({{$point->id}})"><i class="fas fa-pencil-alt"></i></button>
-                                            <button style="display: none;" class="btn btn-success btn-xs section_edit{{$point->id}}" onclick="editPoint('{{$point->id}}')"><i class="fas fa-save"></i></button>
-                                            <form method="post" class="deleteRecord inline" action="{{route('admin.students.profile.point', $point)}}">
+                                            <button class="btn btn-primary btn-xs section_value{{$point->id}}"
+                                                    onclick="showEditForm({{$point->id}})"><i
+                                                        class="fas fa-pencil-alt"></i></button>
+                                            <button style="display: none;"
+                                                    class="btn btn-success btn-xs section_edit{{$point->id}}"
+                                                    onclick="editPoint('{{$point->id}}')"><i class="fas fa-save"></i>
+                                            </button>
+                                            <form method="post" class="deleteRecord inline"
+                                                  action="{{route('admin.students.profile.point', $point)}}">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-danger btn-xs">
@@ -190,17 +200,18 @@
             <script>
 
                 var showEdit = 0;
+
                 function showEditForm(id) {
                     if (showEdit == 0) {
                         showEdit = id;
-                        $('.section_edit'+id).show();
-                        $('.section_value'+id).hide();
+                        $('.section_edit' + id).show();
+                        $('.section_value' + id).hide();
                     } else {
-                        $('.section_edit'+id).show();
-                        $('.section_value'+id).hide();
+                        $('.section_edit' + id).show();
+                        $('.section_value' + id).hide();
 
-                        $('.section_edit'+showEdit).hide();
-                        $('.section_value'+showEdit).show();
+                        $('.section_edit' + showEdit).hide();
+                        $('.section_value' + showEdit).show();
 
                         showEdit = id;
                     }
@@ -208,80 +219,98 @@
 
                 function editPoint(id) {
                     $('#point_edit_id').val(id);
-                    $('#point_edit_hours').val($('#section_edit_hours_'+id).val());
-                    $('#point_edit_minutes').val($('#section_edit_minutes_'+id).val());
-                    $('#point_edit_points').val($('#section_edit_points_'+id).val());
+                    $('#point_edit_hours').val($('#section_edit_hours_' + id).val());
+                    $('#point_edit_minutes').val($('#section_edit_minutes_' + id).val());
+                    $('#point_edit_points').val($('#section_edit_points_' + id).val());
                     $('#point_edit_form').submit();
                 }
 
                 var chartLabels = [];
-                var data = [];
+                var points = [];
+                var hours = [];
+                var ph = [];
 
                 @foreach($points as $point)
-                chartLabels.push({{$point->hours}});
-                data.push({{$point->points}});
+                chartLabels.push('{{$point->created_at->format('m/d/y')}}');
+                points.push({{$point->points}});
+                hours.push({{$point->total_hours}});
+                ph.push({{($point->total_hours > 0 )? number_format($point->points/$point->total_hours, 2): 0}});
                         @endforeach
 
-                var chartData = {
+                var lineChartData = {
                         labels: chartLabels,
                         datasets: [
                             {
                                 label: 'Points',
-                                fillColor: 'rgba(60,141,188,0.9)',
-                                strokeColor: 'rgba(60,141,188,0.8)',
-                                pointColor: '#3b8bba',
-                                pointStrokeColor: 'rgba(60,141,188,1)',
-                                pointHighlightFill: '#fff',
-                                pointHighlightStroke: 'rgba(60,141,188,1)',
-                                data: data
-                            }
-                        ]
+                                borderColor: '#00BCD4',
+                                backgroundColor: '#00BCD4',
+                                fill: false,
+                                data: points,
+                                yAxisID: 'y-axis-1',
+                            },
+                            {
+                                label: 'Hours',
+                                borderColor: '#000000',
+                                backgroundColor: '#000000',
+                                fill: false,
+                                data: hours,
+                                yAxisID: 'y-axis-2',
+                            },
+                            {
+                                label: 'Points/Hour',
+                                borderColor: '#8BC34A',
+                                backgroundColor: '#8BC34A',
+                                fill: false,
+                                data: ph,
+                                yAxisID: 'y-axis-3'
+                            }]
                     };
 
-                var chartOptions = {
-                    //Boolean - If we should show the scale at all
-                    showScale: true,
-                    //Boolean - Whether grid lines are shown across the chart
-                    scaleShowGridLines: false,
-                    //String - Colour of the grid lines
-                    scaleGridLineColor: 'rgba(0,0,0,.05)',
-                    //Number - Width of the grid lines
-                    scaleGridLineWidth: 1,
-                    //Boolean - Whether to show horizontal lines (except X axis)
-                    scaleShowHorizontalLines: true,
-                    //Boolean - Whether to show vertical lines (except Y axis)
-                    scaleShowVerticalLines: true,
-                    //Boolean - Whether the line is curved between points
-                    bezierCurve: true,
-                    //Number - Tension of the bezier curve between points
-                    bezierCurveTension: 0.3,
-                    //Boolean - Whether to show a dot for each point
-                    pointDot: false,
-                    //Number - Radius of each point dot in pixels
-                    pointDotRadius: 4,
-                    //Number - Pixel width of point dot stroke
-                    pointDotStrokeWidth: 1,
-                    //Number - amount extra to add to the radius to cater for hit detection outside the drawn point
-                    pointHitDetectionRadius: 20,
-                    //Boolean - Whether to show a stroke for datasets
-                    datasetStroke: true,
-                    //Number - Pixel width of dataset stroke
-                    datasetStrokeWidth: 2,
-                    //Boolean - Whether to fill the dataset with a color
-                    datasetFill: true,
-                    //Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
-                    maintainAspectRatio: true,
-                    //Boolean - whether to make the chart responsive to window resizing
-                    responsive: true
+                window.onload = function () {
+                    var ctx = document.getElementById('lineChart').getContext('2d');
+                    window.myLine = Chart.Line(ctx, {
+                        data: lineChartData,
+                        options: {
+                            responsive: true,
+                            hoverMode: 'index',
+                            stacked: false,
+                            title: {
+                                display: false,
+                                text: ''
+                            },
+                            scales: {
+                                yAxes: [
+                                    {
+                                        type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+                                        display: true,
+                                        position: 'left',
+                                        id: 'y-axis-1',
+                                    },
+                                    {
+                                        type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+                                        display: true,
+                                        position: 'left',
+                                        id: 'y-axis-2',
+                                    },
+                                    {
+                                        type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+                                        display: true,
+                                        position: 'right',
+                                        id: 'y-axis-3',
+
+                                        // grid line settings
+                                        gridLines: {
+                                            drawOnChartArea: false, // only want the grid lines for one axis to show up
+                                        },
+                                    }],
+                            }
+                        }
+                    });
                 };
 
-                //-------------
-                //- LINE CHART -
-                //--------------
-                var lineChartCanvas = $('#lineChart').get(0).getContext('2d');
-                var lineChart = new Chart(lineChartCanvas);
-                var lineChartOptions = chartOptions;
-                lineChartOptions.datasetFill = false;
-                lineChart.Line(chartData, chartOptions);
             </script>
+
+
+
+
 @endsection

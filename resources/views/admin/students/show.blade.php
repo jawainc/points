@@ -26,7 +26,6 @@
                     <p class="text-muted text-center">{{$student->email}}</p>
 
                     <a href="{{route('admin.students.edit', $student)}}" class="btn btn-primary btn-block"><b>Update</b></a>
-                    <a href="#" class="btn btn-success btn-block"><b>Update Courses</b></a>
                 </div>
                 <!-- /.box-body -->
             </div>

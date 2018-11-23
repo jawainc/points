@@ -137,7 +137,7 @@ class StudentsController extends Controller
             ->where('course_id', $course->id)
             ->first();
         $points = $enrollment->points()->orderBy('created_at', 'ASC')->get();
-        $points_calculation = $enrollment->points_calculations();
+        $points_calculation = $course->percentage_complete($student->id, $course->id);
 
         return view('admin.students.course_profile', compact(
             'student',

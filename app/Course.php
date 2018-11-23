@@ -69,8 +69,15 @@ class Course extends Model
         if ($enrollment && $sections) {
             $points_count = Point::where('course_enrollment_id', $enrollment->id)->count();
             $points_hours = Point::where('course_enrollment_id', $enrollment->id)->sum('hours');
+            $points_minutes = Point::where('course_enrollment_id', $enrollment->id)->sum('minutes');
             $points_points = Point::where('course_enrollment_id', $enrollment->id)->sum('points');
             $percent = intval(($points_count/$sections)*100);
+
+            $t_minutes = ($points_minutes) % 60;
+            $t_hours = ($points_minutes - $t_minutes) / 60;
+            $total_hours = $points_hours + $t_hours;
+            $points_hours =  $total_hours .".". $t_minutes;
+
             return [
                 'percent' => $percent,
                 'hours' => $points_hours,

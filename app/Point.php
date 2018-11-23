@@ -20,6 +20,7 @@ class Point extends Model
     ];
 
 
+
     /*****************
      * Model Relations
      ****************/
@@ -60,5 +61,14 @@ class Point extends Model
         return $this->belongsTo('App\Course', 'course_id');
     }
 
+    /**
+     * get hours + minutes for single entry
+     *
+     * @return string
+     */
+    public function getTotalHoursAttribute()
+    {
+        return  $this->hours .".". $this->minutes;
+    }
 
 }

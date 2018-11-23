@@ -60,37 +60,6 @@ class CourseEnrollment extends Model
 
     }
 
-
-
-    /**
-     * get numbers for enrollment
-     *
-     * @return array
-     */
-    public function points_calculations () {
-
-        $sections = $this->course_sections()->count();
-
-        if ($sections > 0) {
-            $points_count = $this->points()->count();
-            $points_hours = $this->points()->sum('hours');
-            $points_points = $this->points()->sum('points');
-            $percent = intval(($points_count/$sections)*100);
-            return [
-                'percent' => $percent,
-                'hours' => $points_hours,
-                'points' => $points_points,
-            ];
-        }
-
-        return [
-            'percent' => 0,
-            'hours' => 0,
-            'points' => 0,
-        ];
-    }
-
-
     /**
      * Boot function
      */

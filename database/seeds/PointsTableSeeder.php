@@ -11,6 +11,6 @@ class PointsTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Point::class, 100)->create();
+        factory(App\Point::class, 10000)->create();
     }
 }

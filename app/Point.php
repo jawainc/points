@@ -14,6 +14,7 @@ class Point extends Model
         'course_enrollment_id',
         'course_section_id',
         'student_id',
+        'student_group_id',
         'points',
         'hours',
         'minutes'
@@ -59,6 +60,15 @@ class Point extends Model
     public function course ()
     {
         return $this->belongsTo('App\Course', 'course_id');
+    }
+
+    /**
+     * get student group
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function group ()
+    {
+        return $this->belongsTo('App\StudentGroup', 'student_group_id');
     }
 
     /**

@@ -33,12 +33,6 @@
             <div class="box box-primary">
                 <!-- /.box-header -->
                 <div class="box-body">
-                    <strong>Category</strong>
-
-                    <p class="text-muted">{{$student->category->name}}</p>
-
-                    <hr>
-
                     <strong>Group</strong>
 
                     <p class="text-muted">{{$student->group->name}}</p>
@@ -196,7 +190,7 @@
 
         @endsection
 
-        @section('inline-page-scripts')
+@section('inline-page-scripts')
             <script>
 
                 var showEdit = 0;

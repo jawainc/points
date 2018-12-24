@@ -20,7 +20,7 @@ export default {
          */
         loadStudentCategories () {
             this.dataLoading = true;
-            axios.get('/api/graphs/categories')
+            axios.get('/api/graphs/groups')
                 .then((response) => {
                     this.items = response.data;
                 })
@@ -41,7 +41,7 @@ export default {
             if (item === 'student') {
                 this.$router.push('/points/graph/selection/students');
             } else {
-                this.$router.push('/points/graph/selection/category/' + id);
+                this.$router.push('/points/graph/selection/group/' + id);
             }
         },
         /**

@@ -25,11 +25,11 @@ Route::group(['middleware' => 'api'], function(){
     Route::post('/points/graph/student', 'Api\PointsController@studentCourseData');
     Route::post('/points/student/password', 'Api\PointsController@studentVerifyPassword');
 
-    Route::get('/graphs/categories', 'Api\GraphsController@getStudentCategories');
+    Route::get('/graphs/groups', 'Api\GraphsController@getStudentGroups');
     Route::get('/graphs/students/loadItems', 'Api\GraphsController@getStudentGraphItems');
     Route::post('/graphs/students/loadGraphData', 'Api\GraphsController@getStudentGraphData');
-    Route::get('/graphs/category/loadItems/{id}', 'Api\GraphsController@getCategoryGraphItems');
-    Route::post('/graphs/category/loadGraphData', 'Api\GraphsController@getCategoryGraphData');
+    Route::get('/graphs/group/loadItems/{id}', 'Api\GraphsController@getGroupGraphItems');
+    Route::post('/graphs/group/loadGraphData', 'Api\GraphsController@getGroupGraphData');
 });
 
 Route::post('/login', 'Api\LoginController@authenticate');

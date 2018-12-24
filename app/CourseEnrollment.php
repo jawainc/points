@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Carbon\Carbon;
 class CourseEnrollment extends Model
 {
     /**
@@ -12,7 +12,26 @@ class CourseEnrollment extends Model
     protected $fillable = [
         'course_id',
         'student_id',
+        'start_date'
     ];
+
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = [
+        'start_date'
+    ];
+
+    /**
+     * scope query where students can only start course
+     * @param $query
+     * @return mixed
+     */
+    public function scopeCanStartCourse ($query) {
+        return $query->whereDate('start_date', '>=', Carbon::now());
+    }
 
     /*****************
      * Model Relations

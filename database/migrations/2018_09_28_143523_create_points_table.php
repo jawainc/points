@@ -19,6 +19,7 @@ class CreatePointsTable extends Migration
             $table->integer('course_enrollment_id');
             $table->integer('course_section_id');
             $table->integer('student_id');
+            $table->integer('student_group_id');
             $table->double('points', 8, 2);
             $table->integer('hours');
             $table->integer('minutes');

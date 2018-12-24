@@ -9,7 +9,8 @@ export default {
                 student: {
                     id: null,
                     name: null,
-                    courses: []
+                    courses: [],
+                    group_id: null
                 },
                 studentPassword: null,
                 courseName: null,
@@ -396,13 +397,18 @@ export default {
         },
         /**
          * on finish, save values
-         * and move to 1st screen
          */
-        proceedFinish () {
+        proceedFinish (action) {
             if (this.verifyPoints() && this.verifyHours()) {
-                this.isFinishing = true;
+                if (action === 'finish') {
+                    this.isFinishing = true;
+                } else if (action === 'graph') {
+                    this.isSaving = true;
+                }
+
                 axios.post('/api/points/save', {
                     'student_id': this.model.student.id,
+                    'student_group_id': this.model.student.group_id,
                     'course_id': this.model.courseName,
                     'enrollment_id': this.model.courseSession.enrollment_id,
                     'section_id': this.model.courseSession.section_id,
@@ -411,42 +417,19 @@ export default {
                     'minutes': (_.isNil(this.model.studentMinutes))? 0 : this.model.studentMinutes
                 })
                     .then((response) => {
-                        this.cancel();
+                        if (action === 'finish') {
+                            this.cancel();
+                        } else if (action === 'graph') {
+                            this.$router.push('/graph/' + this.model.courseSession.enrollment_id + '/' + this.model.courseName);
+                        }
                     })
                     .catch((e) => {
                         console.log(e);
                     })
                     .finally(() => {
                         this.isFinishing = false;
-                    })
-            }
-        },
-        /**
-         * on finish, save values
-         * and move to graph
-         */
-        proceedGraph () {
-            if (this.verifyPoints() && this.verifyHours()) {
-                this.isSaving = true;
-                axios.post('/api/points/save', {
-                    'student_id': this.model.student.id,
-                    'course_id': this.model.courseName,
-                    'enrollment_id': this.model.courseSession.enrollment_id,
-                    'section_id': this.model.courseSession.section_id,
-                    'points': this.model.studentPoints,
-                    'hours': this.model.studentHours,
-                    'minutes': (_.isNil(this.model.studentMinutes))? 0 : this.model.studentMinutes
-                })
-                    .then((response) => {
-                        this.$router.push('/graph/' + this.model.courseSession.enrollment_id + '/' + this.model.courseName);
-                    })
-                    .catch((e) => {
-                        console.log(e);
-                    })
-                    .finally(() => {
                         this.isSaving = false;
                     })
-
             }
         }
     }

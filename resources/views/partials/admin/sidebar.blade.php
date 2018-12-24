@@ -22,9 +22,6 @@
                     <li class="{{Request::path() == 'admin/students'? 'active':''}}">
                         <a href="{{route('admin.students.index')}}"><i class="far fa-circle"></i> Manage Students</a>
                     </li>
-                    <li class="{{str_contains(Request::path(), 'admin/categories/students')? 'active':''}}">
-                        <a href="{{route('admin.students.categories')}}"><i class="far fa-circle"></i> Categories</a>
-                    </li>
                     <li class="{{str_contains(Request::path(), 'admin/groups/students')? 'active':''}}">
                         <a href="{{route('admin.students.groups')}}"><i class="far fa-circle"></i> Groups</a>
                     </li>
@@ -51,7 +48,7 @@
                 <a href="{{route('admin.users.index')}}"><i class="fas fa-users-cog"></i> Manage Users</a>
             </li>
             <li class="{{str_contains(Request::path(),'graphs')? 'active':''}}">
-                <a href="{{route('admin.graphs.index')}}"><i class="fas fa-chart-line"></i> Graphs</a>
+                <a href="{{route('admin.graphs')}}"><i class="fas fa-chart-line"></i> Graphs</a>
             </li>
             <li class="{{str_contains(Request::path(),'settings')? 'active':''}}">
                 <a href="{{route('admin.settings.index')}}"><i class="fas fa-cogs"></i> Settings</a>

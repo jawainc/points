@@ -4,12 +4,14 @@ namespace App\Http\Controllers\Api;
 
 use App\Course;
 use App\Http\Resources\StudentCategoryListResource;
+use App\Http\Resources\StudentGroupResource;
 use App\Point;
 use App\Student;
 use App\Http\Resources\CourseResource;
 use App\Http\Resources\StudentCategoryResource;
 use App\Http\Resources\StudentSearchResource;
 use App\StudentCategory;
+use App\StudentGroup;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -19,13 +21,13 @@ class GraphsController extends Controller
 {
 
     /**
-     * student categories
+     * student groups
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getStudentCategories () {
-        $categories = StudentCategory::orderBy('name', 'ASC')->get();
-        return response()->json(StudentCategoryResource::collection($categories));
+    public function getStudentGroups () {
+        $groups = StudentGroup::orderBy('name', 'ASC')->get();
+        return response()->json(StudentGroupResource::collection($groups));
     }
 
     /**
@@ -51,7 +53,7 @@ class GraphsController extends Controller
     public function getStudentGraphData (Request $request) {
 
         $query = Point::query();
-        $query->selectRaw('SUM(points) as total_points, SUM(hours) as total_hours, SUM(minutes) as total_minutes, date(created_at) as date');
+        $query->selectRaw('SUM(points) as total_points, SUM(hours) as t_hours, SUM(minutes) as total_minutes, date(created_at) as date');
 
         if ($request->has('student_id') && !empty($request->input('student_id'))) {
             $query->where('student_id', $request->input('student_id'));
@@ -83,34 +85,34 @@ class GraphsController extends Controller
     }
 
     /**
-     * students for category graphs
+     * students for group graphs
      *
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getCategoryGraphItems ($id) {
-        $category = StudentCategory::find($id);
+    public function getGroupGraphItems ($id) {
+        $group = StudentGroup::find($id);
         return response()->json([
-            'name' => $category->name,
-            'students' => StudentCategoryListResource::collection($category->students)
+            'name' => $group->name,
+            'students' => StudentCategoryListResource::collection($group->students)
         ]);
     }
 
     /**
-     * get graph data for category
+     * get graph data for group
      *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getCategoryGraphData (Request $request) {
+    public function getGroupGraphData (Request $request) {
         $query = Point::query();
-        $query->selectRaw('SUM(points) as total_points, SUM(hours) as total_hours, SUM(minutes) as total_minutes, date(created_at) as date');
+        $query->selectRaw('SUM(points) as total_points, SUM(hours) as t_hours, SUM(minutes) as total_minutes, date(created_at) as date');
 
         if ($request->has('student_id') && !empty($request->input('student_id'))) {
             $query->where('student_id', $request->input('student_id'));
         } else {
-            $category = StudentCategory::findOrfail($request->input('category_id'));
-            $student_ids = $category->students()->pluck('id')->toArray();
+            $group = StudentGroup::findOrfail($request->input('group_id'));
+            $student_ids = $group->students()->pluck('id')->toArray();
             $query->whereIn('student_id', $student_ids);
         }
 

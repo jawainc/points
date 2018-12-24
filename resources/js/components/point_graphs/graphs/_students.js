@@ -119,10 +119,10 @@ export default {
                 .then((response) => {
                     let tmp = [];
                     let dt = response.data;
-
+                    console.log(dt);
                     _.forEach(dt, (obj) => {
                         let cPoints = parseInt(obj.total_points);
-                        let cHours = this.timeConvert(obj.total_hours, obj.total_minutes);
+                        let cHours = this.timeConvert(obj.t_hours, obj.total_minutes);
                         tmp.push({
                             'Points': obj.total_points,
                             'Hours': cHours,

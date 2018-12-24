@@ -105,6 +105,7 @@ class PointsController extends Controller
         $point->course_enrollment_id = $request->input('enrollment_id');
         $point->course_section_id = $request->input('section_id');
         $point->student_id = $request->input('student_id');
+        $point->student_group_id = $request->input('student_group_id');
         $point->points = $request->input('points');
         $point->hours = $request->input('hours');
         $point->minutes = $request->input('minutes');

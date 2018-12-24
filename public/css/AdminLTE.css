@@ -7226,3 +7226,15 @@ fieldset[disabled] .btn-yahoo.focus {
     border-left: 1px solid #d2d6de;
   }
 }
+.small-box > .inner.course-box {
+  position: relative;
+}
+.small-box > .inner.course-box .remove-enrollment {
+  position: absolute;
+  z-index: 999;
+  right: 5px;
+  top: 5px;
+}
+.small-box > .inner.course-box .remove-enrollment i {
+  cursor: pointer;
+}

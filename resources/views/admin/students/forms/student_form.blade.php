@@ -27,26 +27,6 @@
     </div>
 
     <div class="col-sm-12 col-md-6">
-        <div class="form-group @if ($errors->has('student_category_id')) has-error @endif">
-            <label >Select Student Category <span class="text-danger">*</span></label>
-
-            <select name="student_category_id" class="form-control select-2">
-                <option value="">Select Category</option>
-                @foreach($student_categories as $category)
-                    <option value="{{$category->id}}"
-                            {{(old('student_category_id', $student->student_category_id) == $category->id)? 'selected':''}}
-                    >{{$category->name}}</option>
-                @endforeach
-            </select>
-            @if ($errors->has('student_category_id')) <span class="help-block">Student category is required</span> @endif
-
-        </div>
-    </div>
-
-</div>
-
-<div class="row">
-    <div class="col-sm-12 col-md-6">
         <div class="form-group @if ($errors->has('student_group_id')) has-error @endif">
             <label >Select Student Group <span class="text-danger">*</span></label>
 
@@ -63,6 +43,7 @@
 
         </div>
     </div>
+
 </div>
 
 

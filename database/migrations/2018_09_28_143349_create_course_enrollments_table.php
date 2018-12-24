@@ -17,6 +17,7 @@ class CreateCourseEnrollmentsTable extends Migration
             $table->increments('id');
             $table->integer('course_id');
             $table->integer('student_id');
+            $table->date('start_date');
             $table->timestamps();
         });
     }

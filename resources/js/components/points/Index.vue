@@ -176,8 +176,8 @@
                                     </v-layout>
                                 </v-layout>
                                 <v-card-actions>
-                                    <v-btn large color="pink" @click="proceedFinish()" :loading="isFinishing" dark>Finish</v-btn>
-                                    <v-btn large color="light-green " :loading="isSaving" @click="proceedGraph()" dark>
+                                    <v-btn large color="pink" @click="proceedFinish('finish')" :loading="isFinishing" dark>Finish</v-btn>
+                                    <v-btn large color="light-green " :loading="isSaving" @click="proceedFinish('graph')" dark>
                                         View Graph
                                     </v-btn>
                                     <v-btn large flat @click="e1 = 2">Back</v-btn>

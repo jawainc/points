@@ -2,110 +2,80 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\User;
-use Illuminate\Http\Request;
+use App\Course;
+use App\CourseCategory;
+use App\CourseSection;
 use App\Http\Controllers\Controller;
 use App\Student;
-use App\Role;
-use Illuminate\Support\Facades\Hash;
+use App\StudentGroup;
+use Illuminate\Http\Request;
+use App\Point;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class GraphsController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display Graph.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::orderBy('name', 'ASC')->paginate(25);
-        return view('admin.users.index', compact('users'));
-    }
+        $query = Point::query();
+        $query->selectRaw('SUM(points) as total_points, SUM(hours) as t_hours, SUM(minutes) as total_minutes, date(created_at) as date');
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $user = new User;
-        $roles = Role::orderBy('name', 'ASC')->get();
-        $students = Student::orderBy('first_name', 'ASC')->get();
-        return view('admin.users.create', compact('user','students', 'roles'));
-    }
-
-    /**
-     * @param StudentValidate $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function store(Request $request)
-    {
-        $validatedData = $request->validate([
-            'name' => 'required',
-            'email' => 'required|email||unique:users,email',
-            'password' => 'required',
-            'confirm_password' => 'required|same:password',
-            'role_id' => 'required'
-        ]);
-        $user = new User();
-        $user->name = $request->input('name');
-        $user->password = Hash::make($request->input('password'));
-        $user->email = $request->input('email');
-        $user->role_id = $request->input('role_id');
-        $user->student_id = $request->input('student_id');
-        $user->save();
-
-        return redirect()->route('admin.users.create')->with('save', 'User saved successfully');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(User $user)
-    {
-        $roles = Role::orderBy('name', 'ASC')->get();
-        $students = Student::orderBy('first_name', 'ASC')->get();
-        return view('admin.users.edit', compact('user','students', 'roles'));
-    }
-
-    /**
-     * @param Request $request
-     * @param User $student
-     */
-    public function update(Request $request, User $user)
-    {
-        $validatedData = $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email,'.$user->id,
-            'confirm_password' => 'sometimes|same:password',
-            'role_id' => 'required'
-        ]);
-        $user->name = $request->input('name');
-        if ($request->has('password')) {
-            $user->password = Hash::make($request->input('password'));
+        if ($request->has('student_id') && !empty($request->input('student_id'))) {
+            $query->where('student_id', $request->input('student_id'));
         }
-        $user->email = $request->input('email');
-        $user->role_id = $request->input('role_id');
-        $user->student_id = $request->input('student_id');
-        $user->save();
 
-        return redirect()->route('admin.users.edit', $user)->with('update', 'User updated successfully');
+        if ($request->has('group_id') && !empty($request->input('group_id'))) {
+            $query->where('student_group_id', $request->input('group_id'));
+        }
+
+        if ($request->has('section_id') && !empty($request->input('section_id'))) {
+            $query->where('course_section_id', $request->input('section_id'));
+        }
+
+        if ($request->has('course_id') && !empty($request->input('course_id'))) {
+            $query->where('course_id', $request->input('course_id'));
+        }
+
+        if ($request->has('from_date') && !empty($request->input('from_date'))) {
+            $query->whereRaw("date(created_at) >= '". Carbon::parse($request->input('from_date'))->format('Y-m-d') ."'");
+        } else if (!$request->has('student_id') && !$request->has('course_id')) {
+            $start_date = new Carbon('first day of this month');
+            $query->whereRaw("date(created_at) >= '". $start_date->format('Y-m-d') ."'");
+        }
+
+        if ($request->has('to_date') && !empty($request->input('to_date'))) {
+            $query->whereRaw("date(created_at) <= '". Carbon::parse($request->input('to_date'))->format('Y-m-d') ."'");
+        } else if (!$request->has('student_id') && !$request->has('course_id')) {
+            $end_date = new Carbon('last day of this month');
+            $query->whereRaw("date(created_at) <= '". $end_date->format('Y-m-d') ."'");
+        }
+
+        $query->groupBy(DB::raw('date(created_at) ASC'));
+
+        $points = $query->get();
+
+        $courses = Course::orderBy('name', 'ASC')->get();
+        $course_sections = CourseSection::orderBy('name', 'ASC')->get();
+        $students = Student::orderBy('first_name', 'ASC')->get();
+        $groups = StudentGroup::orderBy('name', 'ASC')->get();
+        $categories = CourseCategory::orderBy('name', 'ASC')->get();
+
+        $request->flash();
+
+        return view('admin.graphs.index', compact(
+            'points',
+            'courses',
+            'course_sections',
+            'students',
+            'groups',
+            'categories'
+        ));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(User $user)
-    {
-        $user->delete();
-        return redirect()->route('admin.users.index')->with('warning', 'User deleted');
-    }
 
 }

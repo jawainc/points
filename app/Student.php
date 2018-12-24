@@ -13,7 +13,6 @@ class Student extends Model
         'first_name',
         'last_name',
         'email',
-        'student_category_id',
         'student_group_id'
     ];
 
@@ -44,14 +43,6 @@ class Student extends Model
             'course_id'
         );
 
-    }
-
-    /**
-     * get student category
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function category () {
-        return $this->belongsTo('App\StudentCategory', 'student_category_id');
     }
 
     /**

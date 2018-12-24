@@ -2,12 +2,12 @@
 
 use Faker\Generator as Faker;
 
-$courses = \App\StudentCategory::all()->pluck('id')->toArray();
+$courses = \App\Course::all()->pluck('id')->toArray();
 
 $factory->define(\App\CourseSection::class, function (Faker $faker) use ($courses) {
     return [
-        'name' => $faker->words(2, true),
-        'details' => $faker->paragraph(3),
+        'name' => $faker->words(3, true),
+        'details' => $faker->paragraph(10),
         'course_id' => $faker->randomElement($courses)
     ];
 });

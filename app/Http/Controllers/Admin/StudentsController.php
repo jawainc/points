@@ -7,7 +7,7 @@ use App\CourseEnrollment;
 use App\Point;
 use App\Student;
 use App\StudentGroup;
-use App\StudentCategory;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Student as StudentValidate;
@@ -32,9 +32,8 @@ class StudentsController extends Controller
     public function create()
     {
         $student = new Student;
-        $student_categories = StudentCategory::orderBy('name', 'ASC')->get();
         $student_groups = StudentGroup::orderBy('name', 'ASC')->get();
-        return view('admin.students.create', compact('student','student_categories', 'student_groups'));
+        return view('admin.students.create', compact('student','student_groups'));
     }
 
     /**
@@ -58,7 +57,7 @@ class StudentsController extends Controller
     public function show(Student $student)
     {
         $courses = Course::orderBy('name', 'ASC')->get();
-        $enrollments = $student->courses;
+        $enrollments = $student->enrollments()->orderBy('created_at', 'DESC')->get();
         return view('admin.students.show', compact('student', 'enrollments','courses'));
     }
 
@@ -70,9 +69,8 @@ class StudentsController extends Controller
      */
     public function edit(Student $student)
     {
-        $student_categories = StudentCategory::orderBy('name', 'ASC')->get();
         $student_groups = StudentGroup::orderBy('name', 'ASC')->get();
-        return view('admin.students.edit', compact('student','student_categories', 'student_groups'));
+        return view('admin.students.edit', compact('student','student_groups'));
     }
 
     /**
@@ -107,6 +105,7 @@ class StudentsController extends Controller
     {
         $validatedData = $request->validate([
             'course_id' => 'required',
+            'start_date' => 'required'
         ]);
 
         $enrollment_exists = CourseEnrollment::where('course_id', $request->input('course_id'))
@@ -120,6 +119,7 @@ class StudentsController extends Controller
         $enrollment = new CourseEnrollment;
         $enrollment->student_id = $request->input('student_id');
         $enrollment->course_id = $request->input('course_id');
+        $enrollment->start_date = Carbon::parse($request->input('start_date'))->format('Y-m-d');
         $enrollment->save();
 
         return redirect()->route('admin.students.show', $student)->with('save', 'Course saved successfully');
@@ -146,6 +146,18 @@ class StudentsController extends Controller
             'points',
             'points_calculation'
         ));
+    }
+
+    /**
+     * Remove student enrollment
+     *
+     * @param CourseEnrollment $enrollment
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
+     */
+    public function profileEnrollmentDestroy (CourseEnrollment $enrollment) {
+        $enrollment->delete();
+        return redirect()->route('admin.students.show', $enrollment->student)->with('warning', 'Deleted successfully');
     }
 
     /**

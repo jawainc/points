@@ -27,6 +27,7 @@ Route::group(['prefix' => 'admin',  'middleware' => 'auth:web'], function() {
     Route::post('students/add/course', 'Admin\StudentsController@addCourse')->name('admin.students.add.course');
     Route::delete('students/profile/course/point/{point}/destroy', 'Admin\StudentsController@profilePointDestroy')->name('admin.students.profile.point');
     Route::put('students/profile/course/point/update', 'Admin\StudentsController@profilePointUpdate')->name('admin.students.profile.point.update');
+    Route::delete('students/profile/course/{enrollment}/destroy', 'Admin\StudentsController@profileEnrollmentDestroy')->name('admin.students.profile.course.destroy');
     // Course
     Route::resource('courses', 'Admin\CoursesController', ['as' => 'admin']);
     Route::get('course/sections/{course}', 'Admin\CoursesController@sectionIndex')->name('admin.course.sections');
@@ -38,13 +39,6 @@ Route::group(['prefix' => 'admin',  'middleware' => 'auth:web'], function() {
     // Course category
     Route::resource('categories/course', 'Admin\CourseCategoriesController', ['as' => 'admin.categories']);
 
-    // Student categories
-    Route::get('categories/students', 'Admin\StudentCategoriesController@categories')->name('admin.students.categories');
-    Route::get('categories/students/new', 'Admin\StudentCategoriesController@categories_new')->name('admin.students.categories.new');
-    Route::get('categories/students/edit/{id}', 'Admin\StudentCategoriesController@categories_edit')->name('admin.students.categories.edit');
-    Route::post('categories/students/new/add', 'Admin\StudentCategoriesController@categories_add')->name('admin.students.categories.add');
-    Route::put('categories/students/new/add', 'Admin\StudentCategoriesController@categories_update')->name('admin.students.categories.update');
-    Route::delete('categories/students/destroy', 'Admin\StudentCategoriesController@destroy')->name('admin.students.categories.destroy');
     // Student groups
     Route::get('groups/students', 'Admin\StudentGroupsController@groups')->name('admin.students.groups');
     Route::get('groups/students/new', 'Admin\StudentGroupsController@groups_new')->name('admin.students.groups.new');
@@ -53,11 +47,12 @@ Route::group(['prefix' => 'admin',  'middleware' => 'auth:web'], function() {
     Route::put('groups/students/new/add', 'Admin\StudentGroupsController@groups_update')->name('admin.students.groups.update');
     Route::delete('groups/students/destroy', 'Admin\StudentGroupsController@destroy')->name('admin.students.groups.destroy');
 
+    // Graphs
+    Route::get('graphs', 'Admin\GraphsController@index')->name('admin.graphs');
+    Route::post('graphs', 'Admin\GraphsController@index')->name('admin.graphs.search');
+
     // Users
     Route::resource('users', 'Admin\UsersController', ['as' => 'admin']);
-
-    // Graphs
-    Route::resource('graphs', 'Admin\GraphsController', ['as' => 'admin']);
 
     // Settings
     Route::resource('settings', 'Admin\SettingsController', ['as' => 'admin']);

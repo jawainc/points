@@ -18,7 +18,15 @@ class StudentGroup extends Model
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function students () {
-        return $this->hasMany('App\Student');
+        return $this->hasMany('App\Student', 'student_group_id');
+    }
+
+    /**
+     * get group points
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function points () {
+        return $this->hasMany('App\Points', 'student_group_id');
     }
 
     public static function boot() {

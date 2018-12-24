@@ -5,7 +5,7 @@ import Home from '../components/home/Index';
 import PointGraphs from '../components/point_graphs/Index';
 import PointGraphSelection from '../components/point_graphs/GraphSelection';
 import PointGraphSelectionStudents from '../components/point_graphs/graphs/Students';
-import PointGraphSelectionCategory from '../components/point_graphs/graphs/Category';
+import PointGraphSelectionGroup from '../components/point_graphs/graphs/Group';
 
 // Points
 import Points from '../components/points/Index';
@@ -51,9 +51,9 @@ export default [
         component: PointGraphSelectionStudents
     },
     {
-        path: '/points/graph/selection/category/:id',
+        path: '/points/graph/selection/group/:id',
         name: 'PointGraphSelectionCategory',
-        component: PointGraphSelectionCategory,
+        component: PointGraphSelectionGroup,
         props: true
     },
     /******************

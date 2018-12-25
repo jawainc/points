@@ -24,7 +24,7 @@
 
     <link href="{{ asset('css/AdminLTE.css') }}" rel="stylesheet">
     <link href="{{ asset('css/_spacing.css') }}" rel="stylesheet">
-    <link href="{{ asset('plugins/icheck/all.css') }}" rel="stylesheet">
+    <link href="{{ asset('plugins/iCheck/all.css') }}" rel="stylesheet">
 
     <!-- Google Font -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">

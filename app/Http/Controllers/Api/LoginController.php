@@ -24,7 +24,7 @@ class LoginController extends Controller
 
         foreach ($users as $user) {
             if (Hash::check($request->password, $user->password)) {
-                Auth::guard('api')->login($user);
+                Auth::loginUsingId($user->id);
                 $authenticated = true;
                 break;
             }

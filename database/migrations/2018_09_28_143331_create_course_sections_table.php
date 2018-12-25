@@ -17,7 +17,7 @@ class CreateCourseSectionsTable extends Migration
             $table->increments('id');
             $table->integer('course_id');
             $table->string('name');
-            $table->text('details');
+            $table->text('details')->nullable();
             $table->timestamps();
         });
     }

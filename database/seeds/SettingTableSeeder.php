@@ -7,6 +7,7 @@ class SettingTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
+     * seeds settings
      *
      * @return void
      */

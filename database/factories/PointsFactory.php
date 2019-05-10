@@ -7,7 +7,7 @@ $enrollments = \App\CourseEnrollment::all();
 $factory->define(App\Point::class, function (Faker $faker) {
     $enrollment = \App\CourseEnrollment::inRandomOrder()->first();
     $section = \App\CourseSection::where('course_id', $enrollment->course_id)->inRandomOrder()->first();
-    $date = $faker->dateTimeBetween('-5 month', 'now');
+    $date = $faker->dateTimeBetween('-15 day', 'now');
     return [
         'course_id' => $enrollment->course_id,
         'course_enrollment_id' => $enrollment->id,

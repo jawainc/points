@@ -22,13 +22,13 @@
         "lodash": "^4.17.5",
         "material-design-icons-iconfont": "^4.0.2",
         "popper.js": "^1.12",
-        "vue": "^2.5.17"
+        "vue": "^2.6.10"
     },
     "dependencies": {
         "echarts": "^4.2.0-rc.2",
         "moment": "^2.22.2",
         "v-charts": "^1.19.0",
         "vue-router": "^3.0.1",
-        "vuetify": "^1.3.5"
+        "vuetify": "^1.5.13"
     }
 }

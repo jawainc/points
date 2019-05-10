@@ -16,13 +16,19 @@
 
     </head>
     <body>
+        <div id="app">
+            <v-app>
+                <v-toolbar color="pink" dark height=58 app>
+                    <v-toolbar-title class="white--text font-weight-light">Student Points System</v-toolbar-title>
+                </v-toolbar>
+                <v-content>
+                    <v-container fluid>
+                        <router-view></router-view>
+                    </v-container>
+                </v-content>
+            </v-app>
+        </div>
 
-        <v-app id="app">
-            <v-toolbar color="pink" dark height=58 >
-                <v-toolbar-title class="white--text font-weight-light">Student Points System</v-toolbar-title>
-            </v-toolbar>
-            <router-view></router-view>
-        </v-app>
 
     <script src="{{ asset('js/app.js') }}"></script>
     </body>

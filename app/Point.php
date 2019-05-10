@@ -17,7 +17,8 @@ class Point extends Model
         'student_group_id',
         'points',
         'hours',
-        'minutes'
+        'minutes',
+        'notes'
     ];
 
 

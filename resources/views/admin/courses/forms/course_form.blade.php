@@ -24,6 +24,13 @@
         </div>
     </div>
 
+    <div class="col-sm-12 col-md-6">
+        <div class="form-group">
+            <label class="bmd-label-floating">Course Quota</label>
+            <input type="text" class="form-control" name="quota" value="{{old('quota', $course->quota)}}">
+        </div>
+    </div>
+
 </div>
 
 

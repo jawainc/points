@@ -30,6 +30,11 @@ Route::group(['middleware' => 'api'], function(){
     Route::post('/graphs/students/loadGraphData', 'Api\GraphsController@getStudentGraphData');
     Route::get('/graphs/group/loadItems/{id}', 'Api\GraphsController@getGroupGraphItems');
     Route::post('/graphs/group/loadGraphData', 'Api\GraphsController@getGroupGraphData');
+    Route::get('/points/points/coursePoints', 'Api\PointsController@coursePoints');
+    Route::get('/points/points/courseSummary', 'Api\PointsController@courseSummary');
+    Route::post('/points/points/coursePoints', 'Api\PointsController@coursePointsUpdate');
+    Route::post('/points/points/courseSummary', 'Api\PointsController@courseQuotaUpdate');
+
 });
 
 Route::post('/login', 'Api\LoginController@authenticate');

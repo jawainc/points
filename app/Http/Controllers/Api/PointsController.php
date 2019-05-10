@@ -5,11 +5,14 @@ namespace App\Http\Controllers\Api;
 use App\Course;
 use App\CourseEnrollment;
 use App\CourseSection;
+use App\Http\Resources\CourseStudentPoints;
+use App\Http\Resources\CourseSummary;
 use App\Http\Resources\PointResource;
 use App\Point;
 use App\Setting;
 use App\Student;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\StudentSearchResource;
@@ -160,6 +163,33 @@ class PointsController extends Controller
             'course_name' => $enrollment->course->name,
             'student_name' => $enrollment->student->full_name
         ]);
+    }
+
+    public function coursePoints() {
+        return CourseStudentPoints::collection(Course::has('week_points')->orderBy('name', 'ASC')->get());
+    }
+
+    public function courseSummary() {
+        return CourseSummary::collection(Course::has('week_points')->orderBy('name', 'ASC')->get());
+    }
+
+    public function coursePointsUpdate(Request $request) {
+        $point = Point::find($request->id);
+
+        $point->points = $request->points;
+        $point->notes = $request->notes;
+        $point->save();
+
+        return response()->json(['success' => true]);
+    }
+
+    public function courseQuotaUpdate(Request $request) {
+        $course = Course::find($request->id);
+
+        $course->quota = $request->quota;
+        $course->save();
+
+        return response()->json(['success' => true]);
     }
 
     /**

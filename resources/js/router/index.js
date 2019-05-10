@@ -1,11 +1,15 @@
 // Home
 import Home from '../components/home/Index';
 
-// Graphs
-import PointGraphs from '../components/point_graphs/Index';
-import PointGraphSelection from '../components/point_graphs/GraphSelection';
-import PointGraphSelectionStudents from '../components/point_graphs/graphs/Students';
-import PointGraphSelectionGroup from '../components/point_graphs/graphs/Group';
+// Graphs & Points
+import PointGraphs from '../components/admin_point_graphs/Index';
+import PointSelection from '../components/admin_point_graphs/Selection';
+import PointGraphSelection from '../components/admin_point_graphs/GraphSelection';
+import PointGraphSelectionStudents from '../components/admin_point_graphs/graphs/Students';
+import PointGraphSelectionGroup from '../components/admin_point_graphs/graphs/Group';
+import PointPointSelection from '../components/admin_point_graphs/points/Index';
+import PointPointStudent from '../components/admin_point_graphs/points/Student';
+import PointPointSummary from '../components/admin_point_graphs/points/Summary';
 
 // Points
 import Points from '../components/points/Index';
@@ -41,6 +45,14 @@ export default [
         component: PointGraphs
     },
     {
+        path: '/points/selection',
+        name: 'PointSelection',
+        component: PointSelection
+    },
+    /******************
+     * Admin Graphs
+     ******************/
+    {
         path: '/points/graph/selection',
         name: 'PointGraphSelection',
         component: PointGraphSelection
@@ -56,6 +68,25 @@ export default [
         component: PointGraphSelectionGroup,
         props: true
     },
+    /******************
+     * Admin Points
+     ******************/
+    {
+        path: '/points/points',
+        name: 'PointPointSelection',
+        component: PointPointSelection
+    },
+    {
+        path: '/points/points/student',
+        name: 'PointPointStudent',
+        component: PointPointStudent
+    },
+    {
+        path: '/points/points/summary',
+        name: 'PointPointSummary',
+        component: PointPointSummary
+    },
+
     /******************
      * Student Graph
      ******************/

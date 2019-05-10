@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Course extends Model
@@ -11,7 +12,8 @@ class Course extends Model
      */
     protected $fillable = [
         'name',
-        'course_category_id'
+        'course_category_id',
+        'quota'
     ];
 
     /**
@@ -20,6 +22,19 @@ class Course extends Model
      */
     public function course_category () {
         return $this->belongsTo('App\CourseCategory');
+    }
+
+    /**
+     * get course points
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function points () {
+        return $this->hasMany('App\Point', 'course_id')->orderBy('created_at');
+    }
+
+    public function week_points () {
+        return $this->hasMany('App\Point', 'course_id')
+            ->whereRaw('DATE(created_at) >= ?', [Carbon::parse('last Thursday')->format('Y-m-d')]);
     }
 
     /**

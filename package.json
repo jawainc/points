@@ -19,7 +19,7 @@
         "laravel-mix": "^2.0",
         "less": "^3.8.1",
         "less-loader": "^4.1.0",
-        "lodash": "^4.17.5",
+        "lodash": "^4.17.21",
         "material-design-icons-iconfont": "^4.0.2",
         "popper.js": "^1.12",
         "vue": "^2.6.10"
